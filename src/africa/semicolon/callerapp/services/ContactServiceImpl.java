@@ -2,12 +2,15 @@ package africa.semicolon.callerapp.services;
 
 import africa.semicolon.callerapp.data.models.Contact;
 import africa.semicolon.callerapp.data.repositories.ContactRepository;
-import africa.semicolon.callerapp.data.repositories.ContactRepositoryImpl;
 import africa.semicolon.callerapp.dtos.responses.AddContactResponse;
 import africa.semicolon.callerapp.utils.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ContactServiceImpl implements ContactService{
-    ContactRepository contactRepository = new ContactRepositoryImpl();
+    @Autowired
+    ContactRepository contactRepository;
     AddContactResponse contactResponse = new AddContactResponse();
 
     public ContactServiceImpl(ContactRepository contactRepository) {
