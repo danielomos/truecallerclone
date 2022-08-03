@@ -9,16 +9,18 @@ import africa.semicolon.callerapp.data.repositories.UserRepositoryImpl;
 import africa.semicolon.callerapp.dtos.requests.AddContactRequest;
 import africa.semicolon.callerapp.dtos.requests.RegisterRequest;
 import africa.semicolon.callerapp.dtos.responses.AddContactResponse;
+import africa.semicolon.callerapp.dtos.responses.AllContactResponse;
 import africa.semicolon.callerapp.dtos.responses.RegisterUserResponse;
 import africa.semicolon.callerapp.utils.Mapper;
 import exception.UserExistsException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private RegisterUserResponse uResponse = new RegisterUserResponse();
-//    private AddContactResponse contactResponse = new AddContactResponse();
+    private AddContactResponse contactResponse = new AddContactResponse();
    private final ContactService contactService;
 
    public UserServiceImpl(UserRepository userRepository, ContactService contactService) {
@@ -41,7 +43,9 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         Mapper.map(request, user);
         userRepository.addUser(user);
-        uResponse.setMessage("User" + user.getUsername()+ "Added Successfully");
+        uResponse.setMessage(String.format("%s successfully registered", request.getEmail()));
+//        ("User" + user.getUsername()+ "Added Successfully");
+//
         return uResponse;
     }
 
@@ -64,7 +68,8 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByEmail(savedContact.getUserEmail());
         user.getContacts().add(contact);
         userRepository.addUser(user);
-        return  null;
+        contactResponse.setMessage(String.format("%s has been added to the contact list.", contact.getFirstName()));
+        return contactResponse;
 
     }
 
@@ -81,11 +86,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Contact> findContactsBelongingTo(String userEmail) {
+    public List<AllContactResponse> findContactsBelongingTo(String userEmail) {
        User user = userRepository.findByEmail(userEmail);
 
-       return user.getContacts();
-
+       List<Contact> AllUserContact = user.getContacts();
+       List<AllContactResponse> response = new ArrayList<>();
+       for (var contact : AllUserContact) {
+           AllContactResponse singleResponse = new AllContactResponse();
+         Mapper.map(contact,singleResponse);
+           response.add(singleResponse);
+       }
+return response;
     }
 
 //    public int getNumberOfUsers() {

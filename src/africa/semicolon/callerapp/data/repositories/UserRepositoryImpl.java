@@ -11,7 +11,7 @@ public class UserRepositoryImpl implements UserRepository{
     @Override
     public User addUser(User user) {
         if (user.getId() == 0) {
-                ++counter;
+                counter++;
                 user.setId(counter);
                 users.add(user);
             }

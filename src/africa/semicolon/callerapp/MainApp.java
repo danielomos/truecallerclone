@@ -19,10 +19,10 @@ public class MainApp {
     public static void main(String[] args) {
 
 
-//            SpringApplication.run(Main.class, args);
-        new SpringApplicationBuilder(MainApp.class)
-                .web(WebApplicationType.SERVLET)
-                .run(args);
+            SpringApplication.run(MainApp.class, args);
+//        new SpringApplicationBuilder(MainApp.class)
+//                .web(WebApplicationType.SERVLET)
+//                .run(args);
             displayMainMenu();
         }
 

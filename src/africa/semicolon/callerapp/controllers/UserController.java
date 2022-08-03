@@ -1,10 +1,9 @@
 package africa.semicolon.callerapp.controllers;
 
-import africa.semicolon.callerapp.data.models.Contact;
-import africa.semicolon.callerapp.data.models.User;
 import africa.semicolon.callerapp.dtos.requests.AddContactRequest;
 import africa.semicolon.callerapp.dtos.requests.RegisterRequest;
 import africa.semicolon.callerapp.dtos.responses.AddContactResponse;
+import africa.semicolon.callerapp.dtos.responses.AllContactResponse;
 import africa.semicolon.callerapp.dtos.responses.RegisterUserResponse;
 import africa.semicolon.callerapp.services.UserService;
 import africa.semicolon.callerapp.services.UserServiceImpl;
@@ -24,8 +23,8 @@ public class UserController {
     public AddContactResponse addContact(@RequestBody AddContactRequest request){
         return userService.addContact(request);
     }
-    @GetMapping("/user/{userEmail}/contacts")
-    public List<Contact> findContactsBelongingTo(@PathVariable String userEmail){
+    @GetMapping("/user/{userEmail}")
+    public List<AllContactResponse> findContactsBelongingTo(@PathVariable String userEmail){
         return userService.findContactsBelongingTo(userEmail);
     }
 
