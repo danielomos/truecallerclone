@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
 
 
         User user = userRepository.findByEmail(savedContact.getUserEmail());
-        user.getContacts().add(contact);
+        user.getContacts().add(savedContact);
         userRepository.addUser(user);
         contactResponse.setMessage(String.format("%s has been added to the contact list.", contact.getFirstName()));
         return contactResponse;

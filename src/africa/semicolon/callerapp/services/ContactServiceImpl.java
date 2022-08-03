@@ -27,7 +27,7 @@ public class ContactServiceImpl implements ContactService{
 
         contactRepository.save(AddNewcontact);
        // System.out.println(contactResponse.getMessage());
-        return contact;
+        return AddNewcontact;
 
 
     }

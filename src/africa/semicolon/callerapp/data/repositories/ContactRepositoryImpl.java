@@ -11,32 +11,30 @@ public class ContactRepositoryImpl implements ContactRepository{
 
 @Override
 public Contact save(Contact contact) {
-   if (contact.getId() == 0) {
-       counter++;
-       contact.setId(counter);
-       contacts.add(contact);
-   }
-   else {
-     Contact oldcontact = findById(contact.getId());
-     contact.setId(oldcontact.getId());
-     contacts.remove(oldcontact);
-     contacts.add(contact);
+    if (contact.getId() == 0) {
+        counter++;
+        contact.setId(counter);
+        contacts.add(contact);
+    } else {
+        Contact oldcontact = findById(contact.getId());
+        contact.setId(oldcontact.getId());
+        contacts.remove(oldcontact);
+        contacts.add(contact);
 
-   }
-   return contact;
-//    var contactToEdit  =findById(contact.getId());
-//    if (contactToEdit == null) {
-//        counter++;
-//        contact.setId  (counter);
-//        contacts.add(contact);
+    }
+    return contact;
+//    for(Contact contact1: contacts) {
+//        if (contact1.getId() == contact.getId()) {
+//            contact1 = contact;
+//            return contact1;
+//        }
+
 //    }
-//    else{
-//        contactToEdit.setFirstName(contact.getFirstName());
-//        contactToEdit.setLastName(contact.getLastName());
-//        contactToEdit.setEmail(contact.getEmail());
-//        contactToEdit.setPhoneNumber(contact.getPhoneNumber());
-//    }
-//    return  contact;
+//    counter++;
+//    contact.setId(counter);
+//    contacts.add(contact);
+//    return contact;
+
 }
 
 
