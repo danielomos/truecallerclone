@@ -1,10 +1,12 @@
 package africa.semicolon.callerapp.dtos.requests;
 
+import lombok.Data;
+
+@Data
 public class RegisterRequest {
-    private String firstName;
-    private String lastName;
+
     private String email;
-    private String PhoneNumber;
+
     private String password;
     private String username;
 
@@ -42,19 +44,19 @@ public class RegisterRequest {
 //        PhoneNumber = phoneNumber;
 //    }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getUsername() {
-        return this.username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
+//    public String getPassword() {
+//        return password;
+//    }
+//
+//    public void setPassword(String password) {
+//        this.password = password;
+//    }
+//
+//    public String getUsername() {
+//        return this.username;
+//    }
+//
+//    public void setUsername(String username) {
+//        this.username = username;
+//    }
 }

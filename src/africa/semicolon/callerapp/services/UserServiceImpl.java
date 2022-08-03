@@ -3,9 +3,7 @@ package africa.semicolon.callerapp.services;
 import africa.semicolon.callerapp.data.models.Contact;
 import africa.semicolon.callerapp.data.models.User;
 import africa.semicolon.callerapp.data.repositories.ContactRepository;
-import africa.semicolon.callerapp.data.repositories.ContactRepositoryImpl;
 import africa.semicolon.callerapp.data.repositories.UserRepository;
-import africa.semicolon.callerapp.data.repositories.UserRepositoryImpl;
 import africa.semicolon.callerapp.dtos.requests.AddContactRequest;
 import africa.semicolon.callerapp.dtos.requests.RegisterRequest;
 import africa.semicolon.callerapp.dtos.responses.AddContactResponse;
@@ -13,25 +11,25 @@ import africa.semicolon.callerapp.dtos.responses.AllContactResponse;
 import africa.semicolon.callerapp.dtos.responses.RegisterUserResponse;
 import africa.semicolon.callerapp.utils.Mapper;
 import exception.UserExistsException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Service
 public class UserServiceImpl implements UserService {
+    @Autowired
     private final UserRepository userRepository;
     private RegisterUserResponse uResponse = new RegisterUserResponse();
     private AddContactResponse contactResponse = new AddContactResponse();
+    @Autowired
    private final ContactService contactService;
 
    public UserServiceImpl(UserRepository userRepository, ContactService contactService) {
        this.userRepository = userRepository;
        this.contactService = contactService;
    }
-       public UserServiceImpl() {
-       this.userRepository = new UserRepositoryImpl();
-           ContactRepository contactRepository = new ContactRepositoryImpl();
-           this.contactService= new ContactServiceImpl(contactRepository);
-       }
+
 
 
 
@@ -42,7 +40,7 @@ public class UserServiceImpl implements UserService {
 
         User user = new User();
         Mapper.map(request, user);
-        userRepository.addUser(user);
+        userRepository.save(user);
         uResponse.setMessage(String.format("%s successfully registered", request.getEmail()));
 //        ("User" + user.getUsername()+ "Added Successfully");
 //
@@ -50,7 +48,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private void validate(String email) throws UserExistsException{
-        User savedUser = userRepository.findByEmail(email);
+        User savedUser = userRepository.findUserByEmail(email);
         if(savedUser != null) throw new UserExistsException(email + "already exists");
 
     }
@@ -65,9 +63,9 @@ public class UserServiceImpl implements UserService {
         Contact savedContact = contactService.saveContact(contact);
 
 
-        User user = userRepository.findByEmail(savedContact.getUserEmail());
+        User user = userRepository.findUserByEmail(savedContact.getUserEmail());
         user.getContacts().add(savedContact);
-        userRepository.addUser(user);
+        userRepository.save(user);
         contactResponse.setMessage(String.format("%s has been added to the contact list.", contact.getFirstName()));
         return contactResponse;
 
@@ -75,19 +73,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int numberOfUsers() {
-        return userRepository.count();
+        return (int) userRepository.count();
     }
 
     @Override
     public int getContactCount(String userEmail) {
-        User user = userRepository.findByEmail(userEmail);
+        User user = userRepository.findUserByEmail(userEmail);
     return user.getContacts().size();
 
     }
 
     @Override
     public List<AllContactResponse> findContactsBelongingTo(String userEmail) {
-       User user = userRepository.findByEmail(userEmail);
+       User user = userRepository.findUserByEmail(userEmail);
 
        List<Contact> AllUserContact = user.getContacts();
        List<AllContactResponse> response = new ArrayList<>();
@@ -95,6 +93,7 @@ public class UserServiceImpl implements UserService {
            AllContactResponse singleResponse = new AllContactResponse();
          Mapper.map(contact,singleResponse);
            response.add(singleResponse);
+
        }
 return response;
     }
